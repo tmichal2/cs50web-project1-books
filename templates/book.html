@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{{ author }} - {{ title }}
+{% endblock %}
+
+{% block main %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="alert alert-danger text-center" role="alert">
+    {% for message in messages %}
+    {{ message }}
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+{% block body %}{% endblock %}
+
+<div class="card mb-3 container" style="max-width: 800px;">
+
+    <div class="row no-gutters">
+        <div class="col-md-4 text-center">
+            <img src="http://covers.openlibrary.org/b/isbn/{{isbn}}-L.jpg" class="card-img p-2"
+                alt="Book cover for {{ title }}">
+            <p><small><a href="https://openlibrary.org/dev/docs/api/covers">Image courtesy of OpenLibrary</a></small>
+            </p>
+        </div>
+        <div class="col-md-8">
+            <div class="card-body text-center">
+                <h2 class="card-title">{{ title }}</h2>
+                <h4 class="card-text text-muted">by {{ author }}</h4>
+                <p class="card-text"><small class="text-muted">Published: {{ year }}</small><br><small
+                        class="card-text text-muted">ISBN:
+                        {{ isbn }}</small>
+                </p>
+                <div class="rating">
+                    Average Rating on Goodreads: {{ average_rating }} <br>
+                    out of {{ number_ratings }} ratings.
+                </div>
+                <div>
+                    <br>
+                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                        data-target=".bd-example-modal-lg">Write a Review</button>
+                    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
+                        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content container p-2">
+                                <h1>Please write your review below.</h1><br>
+                                <form action="{{ url_for('review', isbn=isbn) }}" method="POST">
+                                    <textarea class="form-control" name="review" id="" cols="30" rows="10"
+                                        style="padding: 10px"></textarea><br>
+                                    <input type="number" name="rating" id="" min="1" max="5" style="width: 5%;"> / 5
+                                    Star Rating<br><br>
+                                    <button class="btn btn-primary p-2">Submit Review</button>
+                                    <br>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div>
+    <h2 class="text-center text-muted pb-1">Reviews</h2>
+</div>
+{% if reviews_exist == True %}
+{% for row in reviews %}
+<div class="media container pt-2" style="border: 1px solid rgba(167, 167, 167, 0.705); padding-left: 2%;">
+    <div class="d-inline-flex" style="border:rgb(202, 202, 202) 1px solid; margin: 1%;">
+        <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.1yoSL-WO0YU5mQKROudvswHaHa%26pid%3DApi&f=1"
+            class="align-self-start mr-3" alt="..." style="width: 25%;">
+        <div class="d-inline-flex">
+            <p class="p-3">{{ row[1] }}</p><br><br>
+
+        </div>
+        {{ row[2] }} / 5 Stars
+    </div>
+    <div class="row col-10">
+
+        <div class="media-body pt-2 float-left">
+            {{ row[0] }}
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<div class="media container pt-2" style="border: 1px solid rgba(167, 167, 167, 0.705); padding-left: 2%;">
+    <div class="media">
+        <div class="media-body">
+            <h5 class="mt-0">No reviews available.</h5>
+            Write the first review for {{ title }}!
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

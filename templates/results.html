@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Search Results
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <div class="">
+        <form action="/search" method="POST">
+            <label for="title">Search by author name, book title, ISBN, or year of publication</label>
+            <div class="row form-group">
+                <div class="col">
+
+                    <input type="text" class="form-control" id="title" name="book_search"
+                        placeholder="Author name, title, ISBN, year">
+                </div>
+                <div class="d-flex justify-content-center">
+                    <input type="submit" class="btn btn-primary align-center" value="Search">
+        </form>
+    </div>
+</div>
+<div class="container">
+    {% if b == False %}
+    <div class="container">
+        <div class="alert alert-danger text-center">
+            No books match your search. Please try again.
+        </div>
+    </div>
+    {% else %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Book Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">ISBN</th>
+                <th scope="col">Year</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in results %}
+
+            <tr>
+
+                <td><a href="{{ url_for('book_page', isbn=row[1]) }}">{{ row[0] }}</a></td>
+                <td>{{ row[3] }}</td>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+</div>
+
+
+
+
+{% endblock %}

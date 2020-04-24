@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block main %}
+
+{% if error %}
+<div class="alert alert-danger">
+    {{ error }} <br>
+</div>
+{% endif %}
+
+
+<div class="container d-flex justify-content-center">
+    <div class="form-group">
+        <form method="POST" action="/login">
+            <input type="text" name="username" placeholder="username" id="" class="form-control"> <br>
+            <input type="password" name="password" placeholder="password" id="" class="form-control"><br>
+            <input type="submit" class="btn-primary form-control" value="Submit">
+        </form>
+    </div>
+
+</div>
+
+
+
+{% endblock %}
